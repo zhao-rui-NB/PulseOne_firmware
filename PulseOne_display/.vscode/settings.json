@@ -1,0 +1,33 @@
+{
+    "files.associations": {
+        "*.ino": "cpp",
+        "functional": "cpp",
+        "arduino.h": "c",
+        "array": "c",
+        "deque": "c",
+        "list": "c",
+        "string": "c",
+        "unordered_map": "c",
+        "unordered_set": "c",
+        "vector": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "regex": "c",
+        "hardwareserial.h": "c",
+        "uart_types.h": "c",
+        "*.tcc": "cpp",
+        "bitset": "cpp",
+        "iterator": "cpp",
+        "random": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "iosfwd": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp",
+        "system_error": "cpp",
+        "thread": "cpp",
+        "images.h": "c"
+    }
+}

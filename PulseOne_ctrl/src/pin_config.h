@@ -1,0 +1,24 @@
+#ifndef _PIN_CONFIG_H_
+#define _PIN_CONFIG_H_
+
+
+#define VIBRATION_MOTOR_PIN 32
+#define SERVO_ON_PIN 16
+#define WS2812_PIN 27
+#define SERVO_PWM_PIN 33
+#define BOTTLE_DETECT_PIN 25
+#define TOUCH_PIN 14
+
+#define MAX30102_1_SDA_PIN 19
+#define MAX30102_1_SCL_PIN 21
+
+// #define COMMAND_UART_RX_PIN 3
+// #define COMMAND_UART_TX_PIN 1
+#define COMMAND_UART_RX_PIN 18
+#define COMMAND_UART_TX_PIN 17
+#define MAX30102_2_SDA_PIN 22
+#define MAX30102_2_SCL_PIN 23
+
+#define INJECT_MODULE_PIN 26
+
+#endif // _PIN_CONFIG_H_

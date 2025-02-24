@@ -1,0 +1,80 @@
+#include <Arduino.h>
+
+#include "MAX30102_by_RF/max30102.h"
+#include "MAX30102_by_RF/algorithm_by_RF.h"
+#include <Wire.h>
+
+#define BUFFER_SIZE 100 //500 samples per second
+
+uint32_t ir_led_buffer[BUFFER_SIZE]; //infrared LED sensor data
+uint32_t red_led_buffer[BUFFER_SIZE];  //red LED sensor data
+
+
+
+void setup() {
+    // put your setup code here, to run once:
+    Serial.begin(115200);
+    
+    Wire.begin();   
+
+    Serial.println("MAX30102 test start");
+
+    uint8_t res =  maxim_max30102_init();
+    if(res){
+        Serial.println("MAX30102 init success");
+    }
+    else{
+        Serial.println("MAX30102 init failed");
+    }
+}
+
+void loop(){
+    // Serial.println("Loop start");
+    // read the sensor data
+    uint32_t elapsedTime,timeStart;
+    timeStart=millis();
+    for(int i=0; i<BUFFER_SIZE; i++){
+
+        // Serial.print("Reading data");Serial.print(i);Serial.println("...");
+
+        // check the fifo has data
+        uint8_t int_status1;
+        do{
+            maxim_max30102_read_reg(REG_INTR_STATUS_1, &int_status1);
+            // Serial.println("Waiting for data...");
+        }while(!(int_status1 & 0xC0)); // interrupt status 1, bit 6: A_FULL, bit 7: PPG_RDY
+        
+
+        maxim_max30102_read_fifo(&red_led_buffer[i], &ir_led_buffer[i]);
+        
+        // Serial.print(i);
+        // Serial.print("\t");
+        // Serial.print(red_led_buffer[i]);
+        // Serial.print("\t");
+        // Serial.println(ir_led_buffer[i]);
+    }
+    //  print time pass
+    elapsedTime=millis()-timeStart;
+    Serial.print("Time passed: ");Serial.print(elapsedTime);Serial.println("ms");
+    // Serial.println("Data read complete");
+    // calculate the heart rate and SpO2
+    float spo2;
+    int8_t spo2_valid;
+    int32_t heart_rate;
+    int8_t hr_valid;
+
+    float ratio, correl; // garbage values
+    // Serial.println("Calculating heart rate and SpO2...");
+    rf_heart_rate_and_oxygen_saturation(ir_led_buffer, BUFFER_SIZE, red_led_buffer, &spo2, &spo2_valid, &heart_rate, &hr_valid, &ratio, &correl);
+    Serial.print("ratio: "); Serial.println(ratio);
+    Serial.print("correl: "); Serial.println(correl);
+
+    Serial.print("Heart rate: ");
+    Serial.println(heart_rate);
+    Serial.print("SpO2: ");
+    Serial.println(spo2);
+    Serial.println("");
+    // delay(1000);
+
+}
+
