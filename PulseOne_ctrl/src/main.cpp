@@ -95,7 +95,7 @@ void loop() {
             case CMD_READ_TOUCH_STATUS:
                 t_value = touchRead(TOUCH_PIN);
                 Serial.printf("touch value: %d\n", t_value);
-                Serial1.write(0x01 ? t_value<30 : 0x00); 
+                Serial1.write(0x01 ? t_value<45 : 0x00); 
                 break;
 
             case CMD_READ_BOTTLE_STATUS:

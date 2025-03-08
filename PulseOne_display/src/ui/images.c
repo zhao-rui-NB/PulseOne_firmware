@@ -1,6 +1,6 @@
 #include "images.h"
 
-const ext_img_desc_t images[29] = {
+const ext_img_desc_t images[44] = {
     { "Avatar", &img_avatar },
     { "Avatar1", &img_avatar1 },
     { "arrow_forward", &img_arrow_forward },
@@ -30,4 +30,19 @@ const ext_img_desc_t images[29] = {
     { "nest_secure_alarm_en", &img_nest_secure_alarm_en },
     { "total_dissolved_solids_dis", &img_total_dissolved_solids_dis },
     { "total_dissolved_solids_en", &img_total_dissolved_solids_en },
+    { "eject", &img_eject },
+    { "pf1", &img_pf1 },
+    { "pf2", &img_pf2 },
+    { "pf3", &img_pf3 },
+    { "pf4", &img_pf4 },
+    { "pf5", &img_pf5 },
+    { "pf6", &img_pf6 },
+    { "pf7", &img_pf7 },
+    { "pf8", &img_pf8 },
+    { "pf9", &img_pf9 },
+    { "pf10", &img_pf10 },
+    { "check_green", &img_check_green },
+    { "insert_pod", &img_insert_pod },
+    { "inject_insert", &img_inject_insert },
+    { "monitor_prepare", &img_monitor_prepare },
 };

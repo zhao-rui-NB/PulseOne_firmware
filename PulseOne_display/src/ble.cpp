@@ -112,7 +112,7 @@ class UserImageIdCharCallbacks: public BLECharacteristicCallbacks {
         // get int value for string 
         std::string value = pCharacteristic->getValue();
         int image_id = std::stoi(value);
-        if(image_id >= 0 && image_id < 3){
+        if(image_id >= 0 && image_id <= 10){
             user_datas[ble_setting_user_id].image_id = image_id;
             Serial.printf("[ble] user %d image id is set to %d\n", ble_setting_user_id, image_id);
         }

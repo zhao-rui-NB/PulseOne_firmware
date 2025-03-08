@@ -10,6 +10,7 @@ extern "C" {
 typedef struct _objects_t {
     lv_obj_t *main;
     lv_obj_t *page_user_home;
+    lv_obj_t *page_inject_eject;
     lv_obj_t *page_inject_ready;
     lv_obj_t *page_inject_carbs;
     lv_obj_t *page_inject_insulin;
@@ -34,7 +35,8 @@ typedef struct _objects_t {
     lv_obj_t *lb_sel_user_name;
     lv_obj_t *btn_user_home_monitor;
     lv_obj_t *btn_user_home_inject;
-    lv_obj_t *lb_last_time;
+    lv_obj_t *btn_eject_pod;
+    lv_obj_t *btn_inject_eject_ok;
     lv_obj_t *btn_inject_back;
     lv_obj_t *btn_insulin;
     lv_obj_t *lb_inject_ready_insulin;
@@ -56,7 +58,7 @@ typedef struct _objects_t {
     lv_obj_t *btn_inject_ingecting_back;
     lv_obj_t *lb_inject_injecting_precent;
     lv_obj_t *lb_inject_injecting_remaining;
-    lv_obj_t *btn_inject_back_6;
+    lv_obj_t *lb_inject_complete_iu;
     lv_obj_t *btn_inject_complete_ok;
     lv_obj_t *btn_test_sensor_back;
     lv_obj_t *lb_test1;
@@ -92,18 +94,19 @@ extern objects_t objects;
 enum ScreensEnum {
     SCREEN_ID_MAIN = 1,
     SCREEN_ID_PAGE_USER_HOME = 2,
-    SCREEN_ID_PAGE_INJECT_READY = 3,
-    SCREEN_ID_PAGE_INJECT_CARBS = 4,
-    SCREEN_ID_PAGE_INJECT_INSULIN = 5,
-    SCREEN_ID_PAGE_INJECT_INSERT_VIAL = 6,
-    SCREEN_ID_PAGE_INJECT_PREPARE = 7,
-    SCREEN_ID_PAGE_INJECT_INJECTING = 8,
-    SCREEN_ID_PAGE_INJECT_COMPLETE = 9,
-    SCREEN_ID_PAGE_TEST_SENSOR = 10,
-    SCREEN_ID_PAGE_MONITOR_NOTICE = 11,
-    SCREEN_ID_PAGE_MONITOR_PREPARE = 12,
-    SCREEN_ID_PAGE_MONITOR_RUNNING = 13,
-    SCREEN_ID_PAGE_MONITOR_COMPLETE = 14,
+    SCREEN_ID_PAGE_INJECT_EJECT = 3,
+    SCREEN_ID_PAGE_INJECT_READY = 4,
+    SCREEN_ID_PAGE_INJECT_CARBS = 5,
+    SCREEN_ID_PAGE_INJECT_INSULIN = 6,
+    SCREEN_ID_PAGE_INJECT_INSERT_VIAL = 7,
+    SCREEN_ID_PAGE_INJECT_PREPARE = 8,
+    SCREEN_ID_PAGE_INJECT_INJECTING = 9,
+    SCREEN_ID_PAGE_INJECT_COMPLETE = 10,
+    SCREEN_ID_PAGE_TEST_SENSOR = 11,
+    SCREEN_ID_PAGE_MONITOR_NOTICE = 12,
+    SCREEN_ID_PAGE_MONITOR_PREPARE = 13,
+    SCREEN_ID_PAGE_MONITOR_RUNNING = 14,
+    SCREEN_ID_PAGE_MONITOR_COMPLETE = 15,
 };
 
 void create_screen_main();
@@ -111,6 +114,9 @@ void tick_screen_main();
 
 void create_screen_page_user_home();
 void tick_screen_page_user_home();
+
+void create_screen_page_inject_eject();
+void tick_screen_page_inject_eject();
 
 void create_screen_page_inject_ready();
 void tick_screen_page_inject_ready();

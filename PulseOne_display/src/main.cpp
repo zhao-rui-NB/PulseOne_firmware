@@ -81,6 +81,7 @@ void setup(){
 
     user_datas_init();
 
+    sysetm_state_init();
     system_state_timer_init();
 
     
@@ -90,7 +91,7 @@ void loop(){
     lv_timer_handler(); /* let the GUI do its work */
     delay(5); /* let this time pass */
     // print the free ram 
-    Serial.printf("free ram: %d\n", ESP.getFreeHeap());
+    // Serial.printf("free ram: %d\n", ESP.getFreeHeap());
 }
 
 

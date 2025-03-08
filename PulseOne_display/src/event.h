@@ -14,7 +14,7 @@
 #include "ble.h"
 
 extern objects_t objects;
-
+static bool bottle_locked = false;
 
 // make sensor power on or off 
 void sensor_power_control(bool on){
@@ -184,6 +184,22 @@ void on_tabviwer_change(lv_event_t * e){
 
 }    
 
+void on_btn_eject_pod_click(lv_event_t * e){
+    if(bottle_locked){
+        sensor_mcu_send(CMD_BOTTLE_UNLOCK);
+        bottle_locked = false;
+    }
+}
+
+void on_btn_user_home_inject_click(lv_event_t * e){
+    if(bottle_locked){
+        lv_screen_load(objects.page_inject_ready);
+    }
+    else{
+        lv_screen_load(objects.page_inject_insert_vial);
+    }
+}
+
 void add_all_event(){
     // page_main (login user)
     lv_obj_add_event_cb(objects.btn_user_0, on_user_login, LV_EVENT_CLICKED, NULL); 
@@ -198,8 +214,12 @@ void add_all_event(){
     // page_user_home
     lv_obj_add_event_cb(objects.btn_user_home_back, change_page_callback, LV_EVENT_CLICKED, objects.main);
     lv_obj_add_event_cb(objects.btn_user_home_monitor, change_page_callback, LV_EVENT_CLICKED, objects.page_monitor_prepare);
+    lv_obj_add_event_cb(objects.btn_eject_pod, on_btn_eject_pod_click, LV_EVENT_CLICKED, NULL);
 
-    lv_obj_add_event_cb(objects.btn_user_home_inject, change_page_callback, LV_EVENT_CLICKED, objects.page_inject_insert_vial);
+    // lv_obj_add_event_cb(objects.btn_user_home_inject, change_page_callback, LV_EVENT_CLICKED, objects.page_inject_insert_vial);
+    lv_obj_add_event_cb(objects.btn_user_home_inject, on_btn_user_home_inject_click, LV_EVENT_CLICKED, objects.page_inject_insert_vial);
+    
+
     // page_inject_insert_vial
     lv_obj_add_event_cb(objects.btn_inject_insert_vial_back, change_page_callback, LV_EVENT_CLICKED, objects.page_user_home);
     // page_inject_ready
@@ -253,7 +273,31 @@ void add_all_event(){
     
 }
 
- 
+void sysetm_state_init(){
+    // read the bottle 
+
+    uint8_t vial_inserted;
+    sensor_mcu_send(CMD_READ_BOTTLE_STATUS);
+    bool succ = sensor_mcu_read_uint8(&vial_inserted);
+
+    if(succ){
+        if(vial_inserted){
+            bottle_locked = true;
+            sensor_mcu_send(CMD_BOTTLE_LOCK);
+        }
+        else{
+            bottle_locked = false;
+            sensor_mcu_send(CMD_BOTTLE_UNLOCK);
+        }
+    }
+
+    sensor_mcu_send(CMD_WS2812_SHOW1);
+
+            
+    
+    
+
+}
 
 void system_state_update(lv_timer_t * timer){
     static uint32_t page_start_time = 0;
@@ -262,7 +306,6 @@ void system_state_update(lv_timer_t * timer){
     static uint8_t data_count = 0;
     static float heart_rate[3];
     static float spo2[3];
-    static bool bottle_locked = false;
 
     //get now page
     lv_obj_t *now_page = lv_scr_act();
@@ -278,6 +321,7 @@ void system_state_update(lv_timer_t * timer){
 
         if(now_page == objects.main) ble_update_page("login");
         else if(now_page == objects.page_user_home) ble_update_page("user_home");
+        else if(now_page == objects.page_inject_eject) ble_update_page("inject_eject");
         else if(now_page == objects.page_inject_ready) ble_update_page("inject_ready");
         else if(now_page == objects.page_inject_carbs) ble_update_page("inject_carbs");
         else if(now_page == objects.page_inject_insulin) ble_update_page("inject_insulin");
@@ -294,10 +338,10 @@ void system_state_update(lv_timer_t * timer){
 
     if (now_page == objects.page_user_home){
         // if bottle locked , unlock it
-        if(bottle_locked){
-            sensor_mcu_send(CMD_BOTTLE_UNLOCK);
-            bottle_locked = false;
-        }
+        // if(bottle_locked){
+        //     sensor_mcu_send(CMD_BOTTLE_UNLOCK);
+        //     bottle_locked = false;
+        // }
 
         // read if CMD_READ_INJECT_MODULE is 1, then show the inject button
         uint8_t inject_module;
@@ -305,9 +349,11 @@ void system_state_update(lv_timer_t * timer){
         bool succ = sensor_mcu_read_uint8(&inject_module);
         if(succ && inject_module){
             lv_obj_remove_flag(objects.btn_user_home_inject, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_remove_flag(objects.btn_eject_pod, LV_OBJ_FLAG_HIDDEN);
         }
         else{
             lv_obj_add_flag(objects.btn_user_home_inject, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_add_flag(objects.btn_eject_pod, LV_OBJ_FLAG_HIDDEN);
         }
     }
 
@@ -494,9 +540,17 @@ void system_state_update(lv_timer_t * timer){
                     // get image dsc from user data
                     const lv_image_dsc_t *img_dsc;
                     if(user_datas[i].image_id == 0) img_dsc = &img_person;
-                    //img_avatar
-                    else if(user_datas[i].image_id == 1) img_dsc = &img_avatar;
-                    else if(user_datas[i].image_id == 2) img_dsc = &img_avatar1;
+                    //img_pf1-10
+                    else if(user_datas[i].image_id == 1) img_dsc = &img_pf1;
+                    else if(user_datas[i].image_id == 2) img_dsc = &img_pf2;
+                    else if(user_datas[i].image_id == 3) img_dsc = &img_pf3;
+                    else if(user_datas[i].image_id == 4) img_dsc = &img_pf4;
+                    else if(user_datas[i].image_id == 5) img_dsc = &img_pf5;
+                    else if(user_datas[i].image_id == 6) img_dsc = &img_pf6;
+                    else if(user_datas[i].image_id == 7) img_dsc = &img_pf7;
+                    else if(user_datas[i].image_id == 8) img_dsc = &img_pf8;
+                    else if(user_datas[i].image_id == 9) img_dsc = &img_pf9;
+                    else if(user_datas[i].image_id == 10) img_dsc = &img_pf10;
                     else img_dsc = &img_person;
 
                     // set image
@@ -534,6 +588,9 @@ void system_state_update(lv_timer_t * timer){
         if(inject_process_percent >= 100){
             sensor_mcu_send(CMD_WS2812_SHOW1);
             lv_screen_load(objects.page_inject_complete);
+
+            // set lb_inject_complete_iu
+            lv_label_set_text_fmt(objects.lb_inject_complete_iu, "%.1f IU", inject_insulin);
         }
         else{
             lv_obj_set_pos(objects.inject_injecting_process_bar, 0, 240 * inject_process_percent / 100);
@@ -548,11 +605,11 @@ void system_state_update(lv_timer_t * timer){
     }
     
     else if(now_page == objects.page_inject_complete){
-        if(is_new_page){
-            // unlock vial
-            sensor_mcu_send(CMD_BOTTLE_UNLOCK);
-            bottle_locked = false;
-        }
+        // if(is_new_page){
+        //     // unlock vial
+        //     sensor_mcu_send(CMD_BOTTLE_UNLOCK);
+        //     bottle_locked = false;
+        // }
     }
     
     last_page = now_page;

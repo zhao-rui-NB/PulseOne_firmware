@@ -16,8 +16,8 @@ void user_datas_init(){
     strcpy(user_datas[0].name, "Guest");
 
 
-    strcpy(user_datas[1].name, "zhao rui");
-    strcpy(user_datas[2].name, "hans");
+    strcpy(user_datas[1].name, "Hans");
+    strcpy(user_datas[2].name, "Zhao");
     strcpy(user_datas[3].name, "user 3");
     strcpy(user_datas[4].name, "user 4");
     strcpy(user_datas[5].name, "user 5");

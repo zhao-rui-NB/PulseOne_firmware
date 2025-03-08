@@ -36,6 +36,21 @@ extern const lv_img_dsc_t img_nest_secure_alarm_dis;
 extern const lv_img_dsc_t img_nest_secure_alarm_en;
 extern const lv_img_dsc_t img_total_dissolved_solids_dis;
 extern const lv_img_dsc_t img_total_dissolved_solids_en;
+extern const lv_img_dsc_t img_eject;
+extern const lv_img_dsc_t img_pf1;
+extern const lv_img_dsc_t img_pf2;
+extern const lv_img_dsc_t img_pf3;
+extern const lv_img_dsc_t img_pf4;
+extern const lv_img_dsc_t img_pf5;
+extern const lv_img_dsc_t img_pf6;
+extern const lv_img_dsc_t img_pf7;
+extern const lv_img_dsc_t img_pf8;
+extern const lv_img_dsc_t img_pf9;
+extern const lv_img_dsc_t img_pf10;
+extern const lv_img_dsc_t img_check_green;
+extern const lv_img_dsc_t img_insert_pod;
+extern const lv_img_dsc_t img_inject_insert;
+extern const lv_img_dsc_t img_monitor_prepare;
 
 #ifndef EXT_IMG_DESC_T
 #define EXT_IMG_DESC_T
@@ -45,7 +60,7 @@ typedef struct _ext_img_desc_t {
 } ext_img_desc_t;
 #endif
 
-extern const ext_img_desc_t images[29];
+extern const ext_img_desc_t images[44];
 
 
 #ifdef __cplusplus
