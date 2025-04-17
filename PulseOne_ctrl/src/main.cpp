@@ -38,6 +38,7 @@ void setup() {
     pox1.shutdown();
     pox2.shutdown();
 
+    pixels.fill(pixels.Color(0, 0, 0)); pixels.show();
 }
 
 
@@ -141,7 +142,7 @@ void loop() {
                 break;
 
             case CMD_WS2812_SHOW1: pixels.fill(pixels.Color(0, 0, 0)); pixels.show(); break;
-            case CMD_WS2812_SHOW2: pixels.fill(pixels.Color(100, 0, 0)); pixels.show(); break;
+            case CMD_WS2812_SHOW2: pixels.fill(pixels.Color(100, 100, 100)); pixels.show(); break;
             case CMD_WS2812_SHOW3: pixels.fill(pixels.Color(0, 100, 0)); pixels.show(); break;
             case CMD_WS2812_SHOW4: pixels.fill(pixels.Color(0, 0, 100)); pixels.show(); break;
 
